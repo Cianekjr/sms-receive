@@ -106,12 +106,16 @@ function getText(html, className) {
 }
 
 function getSeconds(s) {
-	if (s === 'just now') return 0
+	try {
+		if (s === 'just now') return 0
 
-	var n = Number(s.match(/\d+/)[0])
-	if (s.match(/minute/)) n *= 60
-	if (s.match(/hour/)) n *= 60 * 60
-	return n
+		var n = Number(s.match(/\d+/)[0])
+		if (s.match(/minute/)) n *= 60
+		if (s.match(/hour/)) n *= 60 * 60
+		return n
+	} catch {
+		return 0
+	}
 }
 
 function clean(nbr) {
