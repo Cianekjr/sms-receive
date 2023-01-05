@@ -6,7 +6,8 @@ var cache = {};
 var config = {
 	fetch: (url, opts) => {
 		// Pages for specific phone numbers require cookies set by a previous visit, so save them.
-		if (cache.cookie) {
+		if (cache.cookie)
+		{
 			if (!opts) opts = {};
 			if (!opts.headers) opts.headers = {};
 			Object.assign(opts.headers, { 'cookie': cache.cookie });
@@ -32,10 +33,12 @@ var self = module.exports = {
 		var stat = getText(html, config.button);
 
 		var ls = [];
-		for (var i = 0; i < nbr.length; i++) {
+		for (var i = 0; i < nbr.length; i++)
+		{
 			if (stat[i] != 'Open') continue;
 			var nn = PNL.parse(nbr[i]);
-			if (!nn) {
+			if (!nn)
+			{
 				console.log('WARNING: ' + nbr[i] + ' failed to parse!')
 				continue
 			}
@@ -60,7 +63,8 @@ var self = module.exports = {
 		var html = HTML.parse(s);
 		var cells = getText(html, config.message);
 		var ret = [];
-		for (var i = 0; i < cells.length; i += 3) {
+		for (var i = 0; i < cells.length; i += 3)
+		{
 			var o = {
 				sender: clean(cells[i]),
 				message: cells[i + 1],
@@ -77,7 +81,8 @@ var self = module.exports = {
 		return ls.length > 0;
 	},
 	watch: (cfg) => {
-		if (!cfg && cache.watcher) {
+		if (!cfg && cache.watcher)
+		{
 			clearInterval(cache.watcher);
 			return cache.watcher = undefined;
 		}
@@ -85,7 +90,8 @@ var self = module.exports = {
 		cache.watcher = setInterval(chk, 'delay' in cfg ? cfg.delay : 5 * 60 * 1000);
 		async function chk() {
 			var res = await self.check(cfg.receiver, cfg.sender, cfg.re);
-			if (res || --count == 0) {
+			if (res || --count == 0)
+			{
 				clearInterval(cache.watcher);
 				cfg.callback(res);
 			}
@@ -100,9 +106,11 @@ function getText(html, className) {
 }
 
 function getSeconds(s) {
+	if (s === 'just now') return 0
+
 	var n = Number(s.match(/\d+/)[0])
 	if (s.match(/minute/)) n *= 60
-	if (s.match(/hour/)) n *= 60*60
+	if (s.match(/hour/)) n *= 60 * 60
 	return n
 }
 
